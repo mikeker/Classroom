@@ -1,0 +1,14 @@
+; $Id: account_profile.info,v 1.1.2.1 2010/01/14 16:38:20 kenorb Exp $
+name = Account Profile
+description = Integration user account form with Profile content fields
+package = CCK
+core = 6.x
+dependencies[] = content
+dependencies[] = content_profile
+
+; Information added by drupal.org packaging script on 2010-12-22
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "account_profile"
+datestamp = "1293019458"
+

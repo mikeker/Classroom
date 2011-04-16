@@ -1,0 +1,258 @@
+<?php
+// $Id:
+
+/**
+ * @file
+ * Glue module for the TravelWritingClass clssroom site
+ */
+
+/**
+ * Implements hook_perm()
+ * @return array of permissions exposed by this module
+ *
+ * Exposes the following permissions:
+ *    - administer something: allows users to administer something
+ */
+function glue_perm() {
+  return array('view comments fieldset', 'administer students');
+}
+
+/**
+ * Implements hook_menu()
+ * @return array with the menu structure provided by this module
+function glue_menu() {
+  $items = array();
+  $items['test'] = array(
+    'title' => 'Glue module test page',
+    'page callback' => 'glue_test',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['admin/settings/publications'] = array(
+    'title' => 'JISAO publication settings',
+    'description' => 'JISAO publication settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('publications_admin_settings'),
+    'access arguments' => array('administer publications'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'pages.inc',
+  );
+  
+  return $items;
+}
+ */
+
+/**
+ * Implements hook_form_alter
+ * @param $form - array containing the form structure
+ * @param $form_state - current state of the form
+ * @param $form_id - unique ID for this form
+ * @return none
+ * @see http://api.drupal.org/api/function/hook_form_alter/6
+ */
+function glue_form_alter(&$form, &$form_state, $form_id) {
+//  dsm($form_id);
+//  dsm($form);
+  
+//  if (!user_access('view comments fieldset')) {
+//    unset($form['comment_settings']);
+//  }
+  
+  if ('class_node_form' == $form_id) {
+    unset($form['revision_information']);
+  }
+  
+  //  if ('publication_node_form' == $form_id) {
+//    // Tweak some CCK fields after they've been built -- allows us to edit group fields as well.
+//    $form['#after_build'][] = 'glue_cck_alter';
+//    $form['#validate'][] = 'glue_publication_validate';
+//    $form['#submit'][] = 'glue_publication_submit';
+//
+//    if (!user_access('administer publications')) {
+//      // Keep revisions, but remove the field from view
+//      $form['revision_information']['revision']['#type'] = 'hidden';
+//      $form['revision_information']['log']['#type'] = 'hidden';
+//      $form['revision_information']['#attributes'] = array('style' => 'display: none');
+//    }
+//  }
+  
+  // TODO: Update "Group" to "Class"
+  
+  
+  // Some UI tweaks such as better "add another" text and description location
+  $fields = array(
+    'field_class_addl_instructors' => 'Add more instructors',
+  );
+  $spacer = '<div class="spacer"></div>';
+  foreach ($fields as $field => $text) {
+    // Move description below the "add another" field by putting it in the #suffix
+    if (isset($form[$field])) {
+      $form[$field]['#suffix'] = $form[$field]['#description'] . $spacer . $form[$field]['#suffix'];
+      unset($form[$field]['#description']);
+    }
+    
+    // Update the "add another" text to be more descriptive
+    if (isset($form[$field][$field .'_add_more']['#value'])) {
+      $form[$field][$field .'_add_more']['#value'] = t($text);
+    }
+  }
+}
+
+/**
+ * Tweak CCK rendered fields
+ *
+ * @param unknown_type $form
+ * @param unknown_type $form_state
+ */
+function glue_cck_alter($form, &$form_state) {
+
+  // Remove admin fields as needed
+//  if (!user_access('administer publications')) {
+//    $admin_fields = array(
+//      'field_pub_admin_status',
+//      'field_pub_admin_annual_report',
+//      'field_pub_admin_next_email_date',
+//      'field_pub_admin_last_email_date',
+//    );
+//    foreach ($admin_fields as $field) {
+//      /*
+//       * Change some widgets to 'value' widgets, which don't get passed to the form but are handled by the
+//       * FormAPI. This prevents form spoofing that can occur when passing these as 'hidden'.
+//       */
+//      $form['group_admin'][$field]['#type'] = 'value';
+//      $form['group_admin'][$field]['#value'] = $form[$field]['#default_value'];
+//    }
+//
+//    // Remove admin fieldset as well
+//    $form['group_admin']['#attributes']['style'] .= 'display: none;';
+//  }
+//  else {
+//    // Insert HTML version of previous notification dates for admins
+//    $display = array('field_pub_admin_last_email_date_readonly' => array(
+//      '#type' => 'markup',
+//      '#value' => content_view_field(content_fields('field_pub_admin_last_email_date'), $form['#node']),
+//    ));
+//    array_insert($form['group_admin'], $display, 'field_pub_admin_next_email_date');
+//    $form['group_admin']['field_pub_admin_last_email_date_readonly']['#weight'] =
+//      $form['group_admin']['field_pub_admin_next_email_date']['#weight'] -1;
+//  }
+
+  return ($form);
+}
+
+
+/**
+ * Implements hook_nodeapi
+ * @param $node
+ * @param $op
+ * @param $a3
+ * @param $a4
+ * @return unknown_type
+ * @see http://api.drupal.org/api/function/hook_nodeapi/6
+ */
+function glue_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch ($op) {
+    case 'presave':
+      break;        // case 'presave':
+  }
+}
+
+
+/**
+ * Implements hook_cron
+ * @see http://api.drupal.org/api/drupal/developer--hooks--core.php/function/hook_cron/6
+ * @return none
+ */
+function glue_test() {
+}
+
+/**
+ * Implements hook_mail
+ * @param $key
+ * @param $message
+ * @param $params
+function glue_mail($key, &$message, $params) {
+}
+ */
+
+
+/*****************************************************************************/
+
+/*
+ * Test function
+function glue_test() {
+  dpr('in glue_test'); exit;
+}
+ */
+
+
+/*****************************************************************************
+ Helper functions
+ *****************************************************************************/
+
+/**
+ * Inserts $arr2 into $arr1 before $key.  Preserves named keys in both arrays
+ * @param $arr1
+ * @param $arr2
+ * @param $key
+ * @return boolean - TRUE on success, FALSE otherwise
+ */
+function array_insert(&$arr1, $arr2, $key) {
+  if (FALSE !== ($loc = array_search($key, array_keys($arr1)))) {
+    $head = array_slice($arr1, 0, $loc, TRUE);
+    $tail = array_slice($arr1, $loc, NULL, TRUE);
+    $arr1 = array_merge($head, $arr2, $tail);
+    return TRUE;
+  }
+  else {
+    // $key is not a key of $arr1;
+    return FALSE;
+  }
+}
+
+function title_case(
+  $string,
+  $delimiters = array(" ", "-", "O'"),
+  $exceptions = array("to", "a", "the", "of", "by", "and", "with", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X")
+) {
+ /*
+  * Exceptions in lower case are words you don't want converted
+  * Exceptions all in upper case are any words you don't want converted to title case
+  *   but should be converted to upper case, e.g.:
+  *   king henry viii or king henry Viii should be King Henry VIII
+  */
+  foreach ($delimiters as $delimiter) {
+    $words = explode($delimiter, $string);
+    $newwords = array();
+    foreach ($words as $word){
+      if (in_array(strtoupper($word), $exceptions)) {
+        // check exceptions list for any words that should be in upper case
+        $word = strtoupper($word);
+      }
+      elseif (!in_array($word, $exceptions)) {
+        // convert to uppercase
+        $word = ucfirst($word);
+      }
+      array_push($newwords, $word);
+    }
+    $string = join($delimiter, $newwords);
+  }
+  return $string;
+}
+
+
+function classroom_get_instructors($nid) {
+  $node = node_load($nid);
+  if (empty($node)) {
+    return;
+  }
+  $instr = array();
+  $instr[] = theme('username', user_load($node->uid));
+  foreach ($node->field_class_addl_instructors as $info) {
+    if (!empty($info['uid'])) {
+      $instr[] = theme('username', user_load($info['uid']));
+    }
+  }
+  return $instr;  
+}

@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ * Clones a given classroom, copying selected nodes into the new classroom
+ */
+
+/**
+ * Implements hook_perm()
+ * @return array of permissions exposed by this module
+ *
+ * Exposes the following permissions:
+ *    - administer something: allows users to administer something
+ */
+function clone_perm() {
+  return array('clone class');
+}
+
+/**
+ * Implements hook_menu()
+ * @return array with the menu structure provided by this module
+ */
+function clone_menu() {
+  $items = array();
+  
+  $items['class/clone'] = array(
+    'title' => 'Class List',
+    'description' => 'List of classes that can be cloned',
+    'page callback' => 'clone_class_list',
+    'access arguments' => array('clone class'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'pages.inc',
+  );
+  $items['class/clone/%'] = array(
+    'title' => 'Clone Class',
+    'description' => 'Copies and class and selected content into a new class',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('clone_class_form', 2),
+    'access arguments' => array('clone class'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'pages.inc',
+  );
+  
+  return $items;
+}
+
+function clone_theme() {
+  return array(
+    'clone_class_form_theme' => array(
+      'arguments' => array('form' => NULL),
+      'file' => 'pages.inc',
+    ),
+  );
+}

@@ -1,0 +1,5 @@
+; $Id:
+name = Classroom glue module
+description = Custom glue for the TravelWritingClass classroom site  
+core = 6.x
+package = Classroom

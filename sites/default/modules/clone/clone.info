@@ -1,0 +1,7 @@
+name = Classroom clone module
+description = Clones a given classroom, copying selected nodes into the new classroom  
+core = 6.x
+package = Classroom
+dependencies[] = content
+dependencies[] = og
+dependencies[] = scheduler
