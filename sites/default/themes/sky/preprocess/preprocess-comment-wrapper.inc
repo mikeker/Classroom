@@ -22,10 +22,12 @@ $vars['comment_wrapper_attributes']['id'] = 'comments';
 $vars['comment_wrapper_attributes']['id'] = 'comment-wrapper';
 // Add a class indicating no comments have been posted.
 $vars['comment_wrapper_attributes']['class'][] = empty($vars['content']) ? 'no-comments' : '';
-// Add support for the Skinr module.
-$vars['comment_wrapper_attributes']['class'][] = $vars['skinr'];
 // Add a clearfix class.
 $vars['comment_wrapper_attributes']['class'][] = 'clearfix';
+// Add support for the Skinr module.
+if (!empty($vars['skinr'])) {
+  $vars['comment_wrapper_attributes']['class'][] = $vars['skinr'];
+}
 
 // Add a title, and comment count to non-forum node types.
 if ($node->type != 'forum') {

@@ -16,7 +16,7 @@ $comment = $vars['comment'];
 $node = node_load($comment->nid);
 
 // Prepare the variables that will store the attributes while being processed
-$vars['comment_attributes'] = $comment->attributes ? $comment->attributes : array();
+$vars['comment_attributes'] = !empty($comment->attributes) ? $comment->attributes : array();
 
 $advanced_forum = function_exists('advanced_forum_theme');
 if ($node->type == 'forum' && !$advanced_forum) {
@@ -77,7 +77,9 @@ else {
 // Add the clearfix class
 $vars['comment_attributes']['class'][] = 'clearfix';
 // Add support for the Skinr module.
-$vars['comment_attributes']['class'][] = $vars['skinr'];
+if (!empty($vars['skinr'])) {
+  $vars['comment_attributes']['class'][] = $vars['skinr'];
+}
 
 // Crunch all attributes into a single string to be added to the block container.
 $vars['comment_attributes'] = theme('render_attributes', $vars['comment_attributes']);

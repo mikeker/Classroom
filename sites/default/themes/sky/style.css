@@ -19,7 +19,11 @@ body {
 #wrapper {
   background: #fff;
   font-size: 12px;
+  -moz-box-shadow: 1em 1em 1em rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 1em 1em 1em rgba(0, 0, 0, 0.5);
+  box-shadow: 1em 1em 1em rgba(0, 0, 0, 0.5);
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+  -ms-filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
 }
 /* @group Header */
 #header {
@@ -159,9 +163,9 @@ h5 {
 }
 /* @end */
 /* @group Code */
-code, pre, tt {
-  font-size: 11px; /* ems don't work well x-browser for some reason */
-  font-family: "Espresso Mono", Monaco, Consolas, "Lucida Console", monospace;
+code, pre, tt, kbd {
+  font-size: 0.9em;
+  font-family: "Espresso Mono", Monaco, Consolas, "Lucida Console", monospace, sans-serif;
   color: #666;
 }
 pre {
@@ -179,21 +183,6 @@ table {
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
 }
-/*.table-wrapper {
-  overflow: auto;
-}
-.node .table-wrapper,
-.view .table-wrapper {
-  overflow: visible;
-}
-.table-wrapper table {
-  margin: 10px .2%;
-  width: 99.5%;
-}
-table.package,
-#tracker table {
-  width: 99.5%;
-}*/
 /* @group caption */
 table caption {
   font-size: 1.4em;
@@ -294,6 +283,9 @@ dd:last-child {
 }
 dd:hover  {
   background: #eee;
+}
+.inline li {
+  display: inline;
 }
 
 /* @group Undo Styling of DL's in some admin areas */
@@ -400,12 +392,8 @@ acronym:hover, abbr:hover {
   margin: 0;
   padding: 0;
   z-index: 998;
-  opacity: 0.9999; /* Fixes bug FF2 with Superfish menus */
   border: none;
   position: relative;
-}
-html>/**/body #navigation {
- opacity: 1; /* Sets the opacity back for FF3 */
 }
 #navigation li {
   border-right: solid 1px #ddd;
@@ -607,9 +595,6 @@ html>/**/body #navigation {
 #tabs-primary ul li:last-child {
   border-right: solid 1px #ddd;
 }
-#tabs-primary ul li.active::hover:last-child {
-  border-right: solid 1px #858585;
-}
 #tabs-primary ul li.active:last-child {
   border: none;
   background: #fff;
@@ -703,8 +688,9 @@ div.pager {
 .pager-inner {
   padding: 0 0.5em;
   background: #fff url('images/bg-shade-light.png') repeat-x 0 100%;
-  -webkit-border-raduis: 0.333em;
-  -moz-border-raduis: 0.333em;
+  -webkit-border-radius: 0.333em;
+  -moz-border-radius: 0.333em;
+  border-radius: 0.333em;
   border: solid 1px #ddd;
 }
 ul.pager {
@@ -792,54 +778,39 @@ li.leaf {
   padding-left: 0;
 }
 /* @end */
-ul.menu {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  list-style-image: none;
-  border: solid 1px #ddd;
-  /*border-bottom: 0;*/
-}
-ul.menu ul {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-ul.menu ul ul {
-  margin: 0;
-  padding: 0;
-}
+ul.menu *,
 ul.menu li,
 ul.menu li.leaf,
 ul.menu li.expanded,
 ul.menu li.collapsed {
-  list-style: none;
-  list-style-image: none;
-  list-style-type: none;
   margin: 0;
   padding: 0;
+  list-style: none;
+}
+ul.menu {
+  border: solid 1px #ddd;
+}
+ul.menu ul {
+  width: 100%;
+  border: none;
 }
 ul.menu li a {
-  display: block;
-  font-size: 1em;
-  padding: 0.25em 1.5em;
   border-bottom: solid 1px #eee;
   color: #888;
+  display: block;
+  font-size: 1em;
+  padding: 0.25em 0.5em;
 }
 ul.menu li.active-trail > a,
 ul.menu li.active-trail > a.active,
 ul.menu li a.active,
 ul.menu li a.active:visited {
+  background-color: #f8f8f8;
   color: #555;
   text-shadow: #fff 1px 1px 1px;
   font-weight: bold;
-  background-color: #f8f8f8;
 }
-ul.menu a {
-  color: #888;
-  padding: 0.25em 1em;
-}
+ul.menu a,
 ul.menu a:visited {
   color: #888;
 }
@@ -860,48 +831,35 @@ ul.menu li li:last-child a {
 }
 /* @group Indentation */
 /* Indentation is happening at link level with padding. */
-ul.menu a {padding-left: 1em;}
 ul.menu ul a {padding-left: 3.25em;}
 ul.menu ul ul a {padding-left: 4.75em;}
 ul.menu ul ul ul a {padding-left: 6.25em;}
 /* @end */
 
 /* @group Background Images */
-ul.menu .expanded a,
-ul.menu .collapsed a {
+ul.menu .expanded a span,
+ul.menu .collapsed a span {
   background: url('images/sprites-sky.png') no-repeat;
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
+  display: block;
+  float: left;
 }
 /* Indentation needs to be applied to the sprites as well. */
 /* @group First Level */
-ul.menu .expanded a {background-position: 6px -503px;}
-ul.menu .expanded a:hover {background-position: 6px -244px;}
-ul.menu .collapsed a {background-position: 6px -1019px;}
-ul.menu .collapsed a:hover {background-position: 6px -760px;}
+ul.menu .expanded a span {background-position: 6px -503px;}
+ul.menu .expanded a:hover span {background-position: 6px -244px;}
+ul.menu .collapsed a span {background-position: 6px -1023px;}
+ul.menu .collapsed a:hover span {background-position: 6px -763px;}
 /* @end */
-/* @group Second Level */
-ul.menu ul .expanded a {background-position: 22px -503px;}
-ul.menu ul .expanded a:hover {background-position: 22px -244px;}
-ul.menu ul .collapsed a {background-position: 22px -1019px;}
-ul.menu ul .collapsed a:hover {background-position: 22px -760px;}
-/* @end */
-/* @group Third Level */
-ul.menu ul ul .expanded a {background-position: 38px -503px;}
-ul.menu ul ul .expanded a:hover {background-position: 38px -244px;}
-ul.menu ul ul .collapsed a {background-position: 38px -1019px;}
-ul.menu ul ul .collapsed a:hover {background-position: 38px -760px;}
-/* @end */
-/* @group Fourth Level */
-ul.menu ul ul ul .expanded a {background-position: 54px -503px;}
-ul.menu ul ul ul .expanded a:hover {background-position: 54px -244px;}
-ul.menu ul ul ul .collapsed a {background-position: 54px -1019px;}
-ul.menu ul ul ul .collapsed a:hover {background-position: 54px -760px;}
-/* @end */
-
 
 /* Remove the background images for nested list items that don't have any children. */
-ul.menu .expanded .leaf a,
-ul.menu .collapsed .leaf a {
+ul.menu .expanded .leaf a span,
+ul.menu .collapsed .leaf a span {
   background-image: none;
+  width: 0;
+  height: 0;
 }
 /* @end */
 
@@ -961,6 +919,8 @@ ul.menu .collapsed .leaf a {
   -webkit-border-top-left-radius: 0.333em;
   -moz-border-radius-topright: 0.333em;
   -webkit-border-top-right-radius: 0.333em;
+  border-radius-topright: 0.333em;
+  border-radius-topleft: 0.333em;
   border: solid 1px #ddd;
   border-bottom: 0;
 }
@@ -1061,6 +1021,7 @@ ul.menu .collapsed .leaf a {
   padding: 1em;
   -webkit-border-radius: 0.333em;
   -moz-border-radius: 0.333em;
+  border-radius: 0.333em;
 }
 .with-photo .meta {
   padding: 1em 1em 1em 9em;
@@ -1074,7 +1035,6 @@ ul.menu .collapsed .leaf a {
   margin: 0 1em 0 -8em;
   padding: 0;
   border: solid 1px #777;
-  -webkit-box-shadow: 5px 5px 5px;
 }
 .node .meta .picture img {
   margin: 0;
@@ -1099,16 +1059,24 @@ ul.menu .collapsed .leaf a {
   display: block;
   float: left;
 }
-.node .terms ul {
+.node .terms ul.links {
   border: none;
   font-size: 0.9em;
   display: inline;
   padding: 0;
-  margin: 0!important;
+  margin: 0;
 }
-.node .terms ul li {
+.node .terms ul.links li {
+  background: transparent;
+  border: none;
   display: inline;
   margin: 0.25em 0.65em;
+  padding: 0;
+}
+.node .terms ul.links li a:visited:hover,
+.node .terms ul.links li a:hover {
+  color: #000;
+  text-shadow: none;
 }
 /* @end */
 /* @group Content */
@@ -1333,6 +1301,7 @@ dl.node-type-list dt a:before {
   border: solid 1px #ddd;
   -moz-border-radius: 0.333em;
   -webkit-border-radius: 0.333em;
+  border-radius: 0.333em;
 }
 .feed-source .feed-icon {
   margin-left: 1em;
@@ -1367,11 +1336,21 @@ dl.node-type-list dt a:before {
 /* @end */
 /* @group Forms */
 /* @group Fieldsets */
-/* Don't apply padding to the fieldsets */
-fieldset,
-fieldset fieldset {
+/**
+ * Expanded & Regular (not collapsible) Fieldset
+ * Applying required fieldset styles here.
+ */
+fieldset {
+  background: #fff url('images/bg-shade-white-lrg.png') repeat-x bottom left;
+  border: solid 1px #cdcdcd;
   padding: 0;
   margin: 1.3em 0;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
 }
 /**
  * Collapsed Fieldset
@@ -1379,20 +1358,12 @@ fieldset fieldset {
  * or background colors because the fieldset is collapsed.
  */
 fieldset.collapsed {
+  background: none;
   border: none;
-  margin-bottom: 1.5em!important;
-}
-/**
- * Expanded & Regular (not collapsible) Fieldset
- * Applying required fieldset styles here.
- */
-fieldset.collapsible:not(.collapsed),
-fieldset:not(.collapsible) {
-  background: #fff url('images/bg-shade-white-lrg.png') repeat-x bottom left;
-  border: solid 1px #cdcdcd;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
-  -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5em !important;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 html.js fieldset:not(.collapsible) legend {
   padding: 0;
@@ -1646,6 +1617,7 @@ div.messages {
   padding: 1em 1em 2em 1em;
   -webkit-border-radius: 0.333em;
   -moz-border-radius: 0.333em;
+  border-radius: 0.333em;
 }
 div.warning {
   margin: 1em 0;
@@ -1679,6 +1651,7 @@ div.password-description {
   padding: 0.5em 1em 1.25em 4em;
   -webkit-border-radius: 0.333em;
   -moz-border-radius: 0.333em;
+  border-radius: 0.333em;
   font-size: 0.9em;
   margin: -2em 0 1em 0;
 }
@@ -1810,5 +1783,3 @@ ul.menu a.ext {
 }
 /* @end */
 /* @end */
-
- 

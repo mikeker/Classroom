@@ -320,9 +320,10 @@ function sky_build_css() {
 function sky_write_css() {
   // Set the location of the custom.css file
   $file_path = file_directory_path() .'/sky/custom.css';
+  $directory = dirname($file_path);
 
   // If the directory doesn't exist, create it
-  file_check_directory(dirname($file_path), FILE_CREATE_DIRECTORY);
+  file_check_directory($directory, FILE_CREATE_DIRECTORY);
 
   // Generate the CSS
   $file_contents = sky_build_css();
@@ -360,8 +361,6 @@ function sky_font_list() {
 /**
  * Provides Font Stack values for theme settings which are written to custom.css
  * @see sky_font_list()
- * @param $attributes
- * @return string
  */
 function sky_font_stack($font) {
   if ($font) {

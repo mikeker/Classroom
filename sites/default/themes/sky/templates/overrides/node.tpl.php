@@ -10,6 +10,7 @@
  */
 ?>
 <div<?php print $node_attributes; ?>>
+  <?php if($submitted || (!$page && $title) || $terms): ?>
     <div class="meta">
       <?php if ($submitted): ?>
       <?php print $picture; ?>
@@ -27,6 +28,7 @@
         </div>
       <?php endif; ?>
     </div>
+  <?php endif; ?>
   <div class="content clearfix">
     <?php print $content; ?>
   </div>
