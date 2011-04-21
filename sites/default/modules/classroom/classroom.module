@@ -1,0 +1,3 @@
+<?php
+
+include_once('classroom.features.inc');

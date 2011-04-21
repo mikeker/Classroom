@@ -7,7 +7,6 @@
  *
  * @author      Rafal Wieczorek
  * @date        April 2010
- * @version     $Id: account_profile.admin.inc,v 1.1.2.3 2010/12/01 16:06:19 kenorb Exp $
  */
 
 /**
