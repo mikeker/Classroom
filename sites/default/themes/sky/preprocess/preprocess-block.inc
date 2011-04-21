@@ -17,7 +17,7 @@
 $block = $vars['block'];
 
 // Prepare the variables that will store the attributes while being processed
-$vars['block_attributes'] = !empty($block->attributes) ? $block->attributes : array();
+$vars['block_attributes'] = $block->attributes ? $block->attributes : array();
 
 // Add an id for specific block styling.
 $vars['block_attributes']['id'] = 'block-'. $block->module .'-'. $block->delta;
@@ -50,9 +50,7 @@ switch ($block->module) {
 }
 
 // Add support for the Skinr module.
-if (!empty($vars['skinr'])) {
-  $vars['block_attributes']['class'][] = $vars['skinr'];
-}
+$vars['block_attributes']['class'][] = $vars['skinr'];
 
 // Crunch all attributes into a single string to be added to the block container.
 $vars['block_attributes'] = theme('render_attributes', $vars['block_attributes']);

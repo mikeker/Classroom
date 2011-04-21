@@ -20,13 +20,10 @@ $vars['views_attributes']['class'][] = 'view-display-id-'. $vars['display_id'];
 $vars['views_attributes']['class'][] = 'view-dom-id-'. $vars['dom_id'];
 
 // Add a class for the display plugin being used.
-if (!empty($vars['view']->display['$display_id']['display_plugin'])) {
-  $vars['views_attributes']['class'][] =  $vars['view']->display['$display_id']['display_plugin'];
-}
+$vars['views_attributes']['class'][] =  $vars['view']->display['$display_id']['display_plugin'];
+
 // Add support for the Skinr module
-if (!empty($vars['skinr'])) {
-  $vars['views_attributes']['class'][] = $vars['skinr'];
-}
+$vars['views_attributes']['class'][] = $vars['skinr'];
 
 // Crunch all attributes into a single string to be added to the block container.
 $vars['views_attributes'] = theme('render_attributes', $vars['views_attributes']);

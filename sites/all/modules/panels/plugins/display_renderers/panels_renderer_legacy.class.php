@@ -20,8 +20,6 @@
  * plugins are updated.
  */
 class panels_renderer_legacy {
-  var $meta_location = 'standard';
-
   var $display;
   var $plugins = array();
 

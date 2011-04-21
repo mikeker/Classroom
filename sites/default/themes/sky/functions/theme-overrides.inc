@@ -19,7 +19,11 @@ function sky_breadcrumb($breadcrumb) {
   if (!empty($breadcrumb) && (theme_get_setting('sky_breadcrumbs') == 0)) {
     // Use separator defined by theme settings
     $sky_separator = theme_get_setting('sky_breadcrumbs_sep');
-
+    
+    // Replace "Groups" with our new Classes breadcrumb
+    if ('<a href="/og">Groups</a>' == $breadcrumb[1]) {
+      $breadcrumb[1] = l('My Classes', 'my-classes');
+    }
     $separator =  $sky_separator ? $sky_separator : '&raquo;';
     return '<div id="breadcrumbs" class="clearfix">'. implode(' '. $separator .' ', $breadcrumb) .'</div>';
   }
@@ -77,7 +81,6 @@ function sky_fieldset($element) {
  * indicating what's inside, and id attributes.
  */
 function sky_menu_local_tasks() {
-  $output = '';
   $primary = menu_primary_local_tasks();
   $secondary = menu_secondary_local_tasks();
 
@@ -382,28 +385,23 @@ function sky_status_report($requirements) {
 function sky_form_element($element, $value) {
   // This is also used in the installer, pre-database setup.
   $t = get_t();
-  
-  // Form wrapper attributes.
-  $attributes = array();
-  $attributes['class'] = 'form-item';
 
   // Create a class that indicates what type of form item is inside the wrapper.
   if (!empty($element['#type'])) {
-    $attributes['class'] .= ' form-item-'. str_replace('_', '-', $element['#type']);
+    $class_type = ' form-item-'. str_replace('_', '-', $element['#type']);
   }
 
   // Create a class that indicates if the element is required
   if ($element['#required'] == TRUE) {
-    $attributes['class'] .= ' form-item-required';
+    $class_required = ' form-item-required';
   }
 
-  // Add an id attribute where one exists.
+  $output = '<div class="form-item'. $class_type . $class_required .'"';
+
   if (!empty($element['#id'])) {
-    $attributes['id'] = $element['#id'] .'-wrapper';
+    $output .= ' id="'. $element['#id'] .'-wrapper"';
   }
-
-  $output = '<div'. drupal_attributes($attributes).'>' ."\n";
-
+  $output .= ">\n";
   $required = !empty($element['#required']) ? '<span class="form-required" title="'. $t('This field is required.') .'">*</span>' : '';
 
   if (!empty($element['#title'])) {
@@ -434,18 +432,4 @@ function sky_form_element($element, $value) {
  */
 function sky_more_link($url, $title) {
   return '<div class="more-link"> <span class="icon">&nbsp;</span> '. t('<a href="@link" title="@title">more</a>', array('@link' => check_url($url), '@title' => $title)) .'</div>';
-}
-
-/**
- * @see theme_menu_item_link()
- * http://api.drupal.org/api/function/theme_menu_item_link/6
- * Added: <span> tag for icon
- */
-function sky_menu_item_link($link) {
-  if (empty($link['localized_options'])) {
-    $link['localized_options'] = array();
-  }
-  $link['localized_options']['html'] = TRUE;
-
-  return l('<span></span>' . $link['title'], $link['href'], $link['localized_options']);
 }

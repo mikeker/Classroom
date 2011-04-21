@@ -11,7 +11,7 @@
  * 
  */
 /* @group Reset */
-html, body, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+html, body, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
   margin: 0;
   padding: 0;
   border: 0;
@@ -58,10 +58,6 @@ table {
   padding-bottom: 2em;
 }
 /* @end */
-.sidebar,
-#main {
-  float: left;
-}
 #sidebar-left,
 #sidebar-right {
   overflow: hidden;
@@ -79,33 +75,37 @@ table {
 /* @group Both Sidebars */
 .both #sidebar-left {
   width: 20%;
-  clear: both;
+  float: left;
 }
 .both #main {
   width: 60%;
+  float: left;
 }
 .both #sidebar-right {
   width: 20%;
+  float: right;
 }
 /* @end */
 
 /* @group Left Sidebar */
 .left #sidebar-left {
   width: 25%;
-  clear: both;
+  float: left;
 }
 .left #main {
   width: 75%;
+  float: left;
 }
 /* @end */
 
 /* @group Right Sidebar */
 .right #main {
   width: 75%;
-  clear: both;
+  float: left;
 }
 .right #sidebar-right {
   width: 25%;
+  float: right;
 }
 /* @end */
 

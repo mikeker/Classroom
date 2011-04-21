@@ -17,7 +17,7 @@
 $node = $vars['node'];
 
 // Prepare the vars that will store the attributes while being processed
-$vars['node_attributes'] = !empty($node->attributes) ? $node->attributes : array();
+$vars['node_attributes'] = $node->attributes ? $node->attributes : array();
 
 // Add an id for specific block styling.
 $vars['node_attributes']['id'] = 'node-'. $node->nid;
@@ -39,13 +39,11 @@ $vars['node_attributes']['class'][] = ($node->sticky == 1) ? 'sticky' : 'not-sti
 // Add a class that indicates if there is author photo or not
 $vars['node_attributes']['class'][] = ($vars['picture'] !== '') ? 'with-photo' : 'without-photo';
 // Add support for the Skinr module.
-if (!empty($vars['skinr'])) {
-  $vars['node_attributes']['class'][] = $vars['skinr'];
-}
+$vars['node_attributes']['class'][] = $vars['skinr'];
 
 // Remove classes on links, the wrapper classes are enough.
-$vars['links'] = !empty($node->links) ? theme('links', $node->links) : '';
-$vars['terms'] = theme('links', $vars['taxonomy']);
+$vars['links'] = !empty($node->links) ? theme('links', $node->links, NULL) : '';
+$vars['terms'] = theme('links', $vars['taxonomy'], NULL);
 
 // Crunch all attributes into a single string to be added to the block container.
 $vars['node_attributes'] = theme('render_attributes', $vars['node_attributes']);

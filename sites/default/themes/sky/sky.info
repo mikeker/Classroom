@@ -16,7 +16,7 @@ regions[contentfooter] = Content footer
 stylesheets[all][] = css/layout.css
 stylesheets[all][] = style.css
 stylesheets[all][] = system-menus.css
-stylesheets[print][] = css/print.css
+stylesheets[all][] = custom.css
 
 ; SCRIPTS
 ; -----------------------------------------------------------------------------
@@ -24,15 +24,10 @@ scripts[] = scripts/hoverIntent.js
 scripts[] = scripts/superfish.js
 scripts[] = scripts/sky.js
 
-; FEATURES
+; PANELS
 ; -----------------------------------------------------------------------------
-features[] = logo
-features[] = name
-features[] = slogan
-features[] = mission
-features[] = node_user_picture
-features[] = comment_user_picture
-features[] = favicon
+plugins[panels][layouts] = plugins/layouts
+plugins[panels][styles] = plugins/styles
 
 ; THEME SETTINGS
 ; -----------------------------------------------------------------------------
@@ -52,9 +47,9 @@ settings[sky_layout] = fixed_960
 settings[sky_custom_layout] = ''
 settings[sky_nav_alignment] = center
 settings[sky_sub_navigation_width] = 15em
-; Information added by drupal.org packaging script on January 1, 1970 - 00:00
-version = "6.x-3.11"
+; Information added by drupal.org packaging script on 2010-01-25
+version = "6.x-3.10"
 core = "6.x"
 project = "sky"
-datestamp = "1297064260"
+datestamp = "1264385706"
 

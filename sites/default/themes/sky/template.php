@@ -46,10 +46,6 @@ function sky_theme(&$existing, $type, $theme, $path) {
       'arguments' => NULL,
       'file' => 'functions/theme-overrides.inc',
     ),
-    'menu_item_link' => array(
-      'arguments' => array('link' => NULL),
-      'file' => 'functions/theme-overrides.inc',
-    ),
     'more_link' => array(
       'arguments' => array('url' => array(), 'title' => NULL),
       'file' => 'functions/theme-overrides.inc',

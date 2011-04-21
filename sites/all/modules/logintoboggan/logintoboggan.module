@@ -1,4 +1,5 @@
 <?php
+// $Id: logintoboggan.module,v 1.133.2.45 2011/01/06 01:03:06 thehunmonkgroup Exp $
 
 /**
  * @file
@@ -927,18 +928,18 @@ function logintoboggan_validate_email_access($account, $timestamp) {
 function logintoboggan_validate_email($account, $timestamp, $hashed_pass, $action = 'login') {
   global $user;
 
-  // Test here for a valid pre-auth -- if the pre-auth is set to the auth user, we
-  // handle things a bit differently.
-  $validating_id = logintoboggan_validating_id();
-  $pre_auth = !variable_get('user_email_verification', TRUE) && $validating_id != DRUPAL_AUTHENTICATED_RID;
-
   // No time out for first time login.
   // This conditional checks that:
   // - the user is still in the pre-auth role or didn't set
   //   their own password.
   // - the hashed password is correct.
-  if (((variable_get('user_email_verification', TRUE) && empty($account->login)) || ($pre_auth && array_key_exists($validating_id, $account->roles))) && $hashed_pass == logintoboggan_eml_rehash($account->pass, $timestamp, $account->mail)) {
+  if (((variable_get('user_email_verification', TRUE) && empty($account->login)) || array_key_exists(logintoboggan_validating_id(), $account->roles)) && $hashed_pass == logintoboggan_eml_rehash($account->pass, $timestamp, $account->mail)) {
     watchdog('user', 'E-mail validation URL used for %name with timestamp @timestamp.', array('%name' => $account->name, '@timestamp' => $timestamp));
+
+    // Test here for a valid pre-auth -- if the pre-auth is set to the auth user, we
+    // handle things a bit differently.
+    $validating_id = logintoboggan_validating_id();
+    $pre_auth = !variable_get('user_email_verification', TRUE) && $validating_id != DRUPAL_AUTHENTICATED_RID;
 
     _logintoboggan_process_validation($account);
 
@@ -1420,4 +1421,57 @@ function theme_lt_login_link() {
  */
 function theme_lt_login_successful_message($account) {
   return t('Login successful.');
+}
+
+// TODO: submit this as a patch.  See http://drupal.org/node/645740
+/**
+* Implementation of hook_user_operations().
+*/
+function logintoboggan_user_operations() {
+
+   $operations = array(
+    'resend' => array(
+      'label' => t('Re-send one-time login to the selected users'),
+      'callback' => 'logintoboggan_mass_resend_validations',
+    ),
+  );
+  
+  return $operations;
+}
+ 
+/**
+* Callback function for admin mass resending validation to users.
+*/
+function logintoboggan_mass_resend_validations($accounts) {
+  foreach ($accounts as $uid) {
+    $account = user_load(array('uid' => (int)$uid));
+    
+    // Variables to replace in e-mail
+    $pass = t(
+      'If required, you may reset your password from: !url', 
+      array('!url' => url('user/password', array('absolute' => TRUE)))
+    );
+    $variables = array(
+      '!username' => $account->name, 
+      '!site' => variable_get('site_name', 'drupal'), 
+      '!password' => $pass, 
+      '!uri' => $base_url, 
+      '!uri_brief' => substr($base_url, strlen(_logintoboggan_protocol() .'://')), 
+      '!mailto' => $account->mail, 
+      '!date' => format_date(time()), 
+      '!login_uri' => url('user', array('absolute' => TRUE)), 
+      '!edit_uri' => url('user/'. $account->uid .'/edit', array('absolute' => TRUE)), 
+      '!login_url' => logintoboggan_eml_validate_url($account)
+    );
+    
+    // Prepare and send e-mail.
+    $params['account'] = $account;
+    $params['login_url'] = logintoboggan_eml_validate_url($account);
+    
+    // Prepare and send e-mail.
+    drupal_mail('logintoboggan', 'logintoboggan_resend_validation', $account->mail, $language, $params);
+      
+    // Notify admin that e-mail was sent
+    watchdog('LoginToboggan', "A validation e-mail has been re-sent to " . $account->name . "'s e-mail address.", WATCHDOG_NOTICE);
+  }
 }

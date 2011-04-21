@@ -1,4 +1,5 @@
 <?php
+// $Id: author-pane-user-picture.tpl.php,v 1.1.2.5 2010/10/04 15:33:48 michellec Exp $
 
 /**
  * @file

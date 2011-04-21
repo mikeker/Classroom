@@ -1,4 +1,5 @@
 <?php
+// $Id: og.author-pane.inc,v 1.1.2.2.2.5 2010/10/04 14:59:56 michellec Exp $
 
 /**
  * @file

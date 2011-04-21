@@ -1,4 +1,5 @@
 <?php
+// $Id: user_badges.author-pane.inc,v 1.1.2.2.2.4 2010/10/04 14:59:56 michellec Exp $
 
 /**
  * @file
